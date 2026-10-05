@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
+/* Design tokens. Explorer/Scientific modes use the calm "museum" look;
+   data-mode="kid" switches to brighter colours, rounder shapes, bigger text. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f6f3ec;
+  --card: #ffffff;
+  --ink: #1f2a24;
+  --muted: #5d6b63;
+  --line: #e2dccd;
+  --brand: #2f6b4f;
+  --brand-ink: #ffffff;
+  --accent: #c8862a;
+  --radius: 14px;
+  --font-size: 16px;
+}
+:root[data-theme="dark"] {
+  --bg: #121a16;
+  --card: #1b2620;
+  --ink: #eef3ee;
+  --muted: #a4b3aa;
+  --line: #2c3a32;
+  --brand: #6fcf9a;
+  --brand-ink: #0e1a13;
+  --accent: #f0b95b;
+}
+:root[data-mode="kid"] {
+  --bg: #fff8e6;
+  --card: #ffffff;
+  --brand: #d9480f;
+  --brand-ink: #ffffff;
+  --accent: #0b8f82;
+  --line: #ffd9a8;
+  --radius: 26px;
+  --font-size: 18px;
+}
+:root[data-mode="kid"][data-theme="dark"] {
+  --bg: #1d1633;
+  --card: #2a2147;
+  --ink: #fff6e6;
+  --muted: #cbbfe8;
+  --line: #43366b;
+  --brand: #ff8a5c;
+  --brand-ink: #1d1633;
+  --accent: #5fe0cf;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brandink: var(--brand-ink);
+  --color-accent: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { font-size: var(--font-size); }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body), system-ui, sans-serif; }
+h1, h2, h3 { font-family: var(--font-display), var(--font-body), sans-serif; }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+.card { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); }
+.btn { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .55rem 1.1rem; font-weight: 700;
+  background: var(--brand); color: var(--brand-ink); transition: transform .15s; cursor: pointer; }
+.btn:hover { transform: translateY(-2px) scale(1.03); }
+.btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); }
+.chip { border: 2px solid var(--line); border-radius: 999px; padding: .25rem .8rem; font-weight: 600; font-size: .9rem; cursor: pointer; background: var(--card); }
+.chip[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+@keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+.bob { animation: bob 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .bob { animation: none; } .btn { transition: none; } }
