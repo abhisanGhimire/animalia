@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Animalia
 
-## Getting Started
+A kid-friendly animal encyclopedia: search, continent browsing, quizzes, comparisons, a tank-mate checker and a step-by-step Drawing Academy.
 
-First, run the development server:
+## Run it
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    npm install
+    npm run dev      # http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it is organised
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `data/` holds the animal records (never hard-coded in the UI). `lib/types.ts` defines the record shape.
+- `lib/db.ts` is the only file that reads the data (search, filters, paging, quiz, recommendations). Swap its insides for Postgres or a search engine later and nothing else changes.
+- `app/api/*` are the server routes the UI calls.
+- `components/` are reusable UI pieces. `lib/settings.tsx` holds Kid / Explorer / Scientist mode, dark mode and the "Gentle" switch that hides potentially frightening animals.
+- `lib/store.ts` keeps favourites, progress and streaks in the browser only.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Data honesty
 
-## Learn More
+24 sample animals. Facts were written from general knowledge and show "Not yet verified" until checked against the listed sources (IUCN Red List, Animal Diversity Web, Catalogue of Life). Pictures are emoji placeholders, not photographs.
 
-To learn more about Next.js, take a look at the following resources:
+## Not built yet
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Real photos, audio, country-level map, tree of life, food-web diagram, photo identification, accounts, PWA/offline, worksheets and report builder.
