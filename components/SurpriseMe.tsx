@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSettings } from "@/lib/settings";
+import { surprise, type SurpriseCategory } from "@/lib/db";
 
 const CATS = [
   ["any", "🎲 Anything"], ["cutest", "🥰 Cutest"], ["biggest", "🐋 Biggest"], ["smallest", "🐜 Smallest"],
@@ -14,9 +15,9 @@ export default function SurpriseMe() {
   const [cat, setCat] = useState<string>("any");
   const [busy, setBusy] = useState(false);
 
-  async function go() {
+  function go() {
     setBusy(true);
-    const a = await fetch(`/api/surprise?category=${cat}&hideScary=${hideScary}`).then((r) => r.json());
+    const a = surprise(cat as SurpriseCategory, hideScary);
     router.push(`/animals/${a.slug}`);
   }
 

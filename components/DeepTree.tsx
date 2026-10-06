@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { KID } from "@/data/kidnames";
-import type { TreeChild } from "@/app/api/world/children/route";
+import { childrenOf, type TreeChild } from "@/lib/gbif";
 
 const RANK: Record<string, string> = {
   PHYLUM: "Big group", CLASS: "Group", ORDER: "Family line", FAMILY: "Family", GENUS: "Close cousins", SPECIES: "Kind of animal",
@@ -20,8 +20,7 @@ function Branch({ node }: { node: TreeChild }) {
     if (next === null || busy) return;
     setBusy(true); setErr(false);
     try {
-      const d = await fetch(`/api/world/children?key=${node.key}&offset=${next}`).then((r) => r.json());
-      if (d.error) setErr(true);
+      const d = await childrenOf(node.key, next);
       setKids((k) => [...k, ...d.children]);
       setNext(d.next);
     } catch { setErr(true); }
@@ -70,8 +69,7 @@ export default function DeepTree() {
   async function start() {
     setStarted(true);
     try {
-      const d = await fetch("/api/world/children?key=1").then((r) => r.json());
-      if (d.error) setErr(true);
+      const d = await childrenOf(1, 0);
       setRoots(d.children);
     } catch { setErr(true); }
   }

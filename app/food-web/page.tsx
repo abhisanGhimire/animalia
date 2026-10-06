@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FOOD_WEBS, ROLES, type WebNode } from "@/data/foodwebs";
 
-const W = 800, H = 460;
+const W = 800, H = 560;
 
 export default function FoodWebPage() {
   const [webId, setWebId] = useState(FOOD_WEBS[0].id);
@@ -17,7 +17,7 @@ export default function FoodWebPage() {
       const col = web.nodes.filter((n) => n.role !== "decomposer" && ROLES[n.role].column === c);
       col.forEach((n, i) => { out[n.id] = { x: 90 + c * 207, y: 20 + ((i + 0.5) * 330) / col.length + 25 }; });
     }
-    web.nodes.filter((n) => n.role === "decomposer").forEach((n) => { out[n.id] = { x: W / 2, y: H - 50 }; });
+    web.nodes.filter((n) => n.role === "decomposer").forEach((n) => { out[n.id] = { x: W / 2, y: H - 62 }; });
     return out;
   }, [web]);
 
@@ -36,8 +36,9 @@ export default function FoodWebPage() {
       </div>
       <p>{web.blurb}</p>
 
-      <div className="card overflow-hidden p-2">
-        <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label={`Food web for ${web.name}`} className="w-full">
+      <div className="card overflow-x-auto p-2">
+        <p className="px-2 text-xs text-muted md:hidden">👉 Swipe sideways to see the whole web</p>
+        <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label={`Food web for ${web.name}`} className="h-auto w-full min-w-[640px]">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink)" /></marker>
           </defs>

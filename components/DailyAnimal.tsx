@@ -3,13 +3,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import StatusBadge from "./StatusBadge";
 import { useSettings } from "@/lib/settings";
+import { dailyAnimal } from "@/lib/db";
 import type { Animal } from "@/lib/types";
 
 export default function DailyAnimal() {
   const { hideScary, mode } = useSettings();
   const [a, setA] = useState<Animal | null>(null);
   useEffect(() => {
-    fetch(`/api/daily?hideScary=${hideScary}`).then((r) => r.json()).then(setA).catch(() => {});
+    setA(dailyAnimal(new Date(), hideScary));
   }, [hideScary]);
   if (!a) return <div className="card h-56 animate-pulse" aria-busy />;
   const text = mode === "kid" ? a.kid : a.explorer;

@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSettings } from "@/lib/settings";
 import { useProgress } from "@/lib/store";
-import type { QuizQuestion } from "@/lib/db";
+import { quiz, type QuizQuestion } from "@/lib/db";
 
 export default function LearnPage() {
   const { hideScary } = useSettings();
@@ -15,7 +15,7 @@ export default function LearnPage() {
 
   const load = useCallback(() => {
     setQs([]); setI(0); setPicked(null); setScore(0); setDone(false);
-    fetch(`/api/quiz?n=6&hideScary=${hideScary}`).then((r) => r.json()).then(setQs);
+    setQs(quiz(6, hideScary));
   }, [hideScary]);
   useEffect(load, [load]);
 

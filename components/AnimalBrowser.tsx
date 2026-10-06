@@ -1,12 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import AnimalCard from "./AnimalCard";
 import { useSettings } from "@/lib/settings";
 import { CONTINENTS, STATUS, HABITATS } from "@/data/reference";
-import type { AnimalSummary } from "@/lib/types";
-
-interface Page { items: AnimalSummary[]; total: number; page: number; pages: number }
+import { listAnimals } from "@/lib/db";
 
 const GROUPS = ["Mammals", "Birds", "Reptiles", "Amphibians", "Fish", "Insects", "Arachnids", "Crustaceans", "Mollusks", "Cnidarians", "Echinoderms", "Annelids", "Myriapods", "Sponges", "Other"];
 const DIETS = ["Herbivore", "Carnivore", "Omnivore", "Filter feeder"];
@@ -19,20 +16,16 @@ export default function AnimalBrowser({ fixed = {}, hide = [] }: { fixed?: Recor
   const path = usePathname();
   const sp = useSearchParams();
   const { hideScary } = useSettings();
-  const [data, setData] = useState<Page | null>(null);
 
   const params = new URLSearchParams(sp.toString());
   const qs = new URLSearchParams(params);
   for (const [k, v] of Object.entries(fixed)) qs.set(k, v);
-  qs.set("hideScary", String(hideScary));
-  qs.set("pageSize", "12");
-  const key = qs.toString();
-
-  useEffect(() => {
-    const ctl = new AbortController();
-    fetch(`/api/animals?${key}`, { signal: ctl.signal }).then((r) => r.json()).then(setData).catch(() => {});
-    return () => ctl.abort();
-  }, [key]);
+  // The animal list is bundled with the app, so filtering happens right here in the browser.
+  const g = (k: string) => qs.get(k) || undefined;
+  const data = listAnimals({
+    q: g("q"), group: g("group"), continent: g("continent"), diet: g("diet"), status: g("status"), realm: g("realm"), habitat: g("habitat"),
+    sort: qs.get("sort") === "status" ? "status" : "name", hideScary, page: Number(qs.get("page") ?? 1) || 1, pageSize: 12,
+  });
 
   function set(k: string, v: string) {
     const n = new URLSearchParams(sp.toString());
@@ -69,9 +62,7 @@ export default function AnimalBrowser({ fixed = {}, hide = [] }: { fixed?: Recor
         {filtersOn && <button className="btn btn-ghost" onClick={() => router.replace(path)}>Clear</button>}
       </div>
 
-      {!data ? (
-        <p aria-busy>Loading animals…</p>
-      ) : data.items.length === 0 ? (
+      {data.items.length === 0 ? (
         <p className="card p-6 text-center">No animals match yet. Try fewer filters! 🔎</p>
       ) : (
         <>

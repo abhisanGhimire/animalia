@@ -11,7 +11,7 @@ A kid-friendly animal encyclopedia: search, continent browsing, quizzes, compari
 
 - `data/` holds the animal records (never hard-coded in the UI). `lib/types.ts` defines the record shape.
 - `lib/db.ts` is the only file that reads the data (search, filters, paging, quiz, recommendations). Swap its insides for Postgres or a search engine later and nothing else changes.
-- `app/api/*` are the server routes the UI calls.
+- The site is a fully static web app (no server). The bundled animals are searched in the browser; GBIF is queried directly from the browser (`lib/gbif.ts`).
 - `components/` are reusable UI pieces. `lib/settings.tsx` holds Kid / Explorer / Scientist mode, dark mode and the "Gentle" switch that hides potentially frightening animals.
 - `lib/store.ts` keeps favourites, progress and streaks in the browser only.
 
@@ -22,3 +22,7 @@ A kid-friendly animal encyclopedia: search, continent browsing, quizzes, compari
 ## Not built yet
 
 Real photos, audio, country-level map, photo identification, accounts, PWA/offline.
+
+## Deploy
+
+Pushing to `main` builds and publishes to GitHub Pages (`.github/workflows/deploy.yml`). The app is an installable PWA (`app/manifest.ts`, `public/sw.js`).

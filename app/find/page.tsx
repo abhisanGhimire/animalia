@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
 import { useDebounced } from "@/components/useDebounced";
-import type { WorldAnimal } from "@/app/api/world/route";
+import { searchWorld, type WorldAnimal } from "@/lib/gbif";
+import { listAnimals } from "@/lib/db";
 import type { AnimalSummary } from "@/lib/types";
 
 export default function FindPage() {
@@ -19,10 +20,9 @@ export default function FindPage() {
     if (dq.trim().length < 3) { setMine([]); setWorld([]); setState("idle"); return; }
     const ctl = new AbortController();
     setState("loading");
-    fetch(`/api/animals?q=${encodeURIComponent(dq)}&pageSize=6`, { signal: ctl.signal }).then((r) => r.json()).then((d) => setMine(d.items)).catch(() => {});
-    fetch(`/api/world?q=${encodeURIComponent(dq)}&extinct=${extinct}`, { signal: ctl.signal })
-      .then((r) => r.json())
-      .then((d) => { setWorld(d.results ?? []); setTotal(d.total ?? 0); setState(d.error ? "error" : "done"); })
+    setMine(listAnimals({ q: dq, pageSize: 6 }).items);
+    searchWorld(dq, extinct, ctl.signal)
+      .then((d) => { setWorld(d.results); setTotal(d.total); setState("done"); })
       .catch((e) => { if (e.name !== "AbortError") setState("error"); });
     return () => ctl.abort();
   }, [dq, extinct]);

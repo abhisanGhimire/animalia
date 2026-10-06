@@ -1,8 +1,10 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { STATUS } from "@/data/reference";
-import type { Animal, AnimalSummary, Range } from "@/lib/types";
+import { getAnimal, listAnimals } from "@/lib/db";
+import type { Animal, Range } from "@/lib/types";
 
 const NA = "Reliable information is currently unavailable.";
 const rng = (r?: Range, u = "") => (r ? `${r.min}–${r.max} ${u}`.trim() : NA);
@@ -43,14 +45,9 @@ function TankCheck({ fish }: { fish: Animal[] }) {
 function CompareInner() {
   const sp = useSearchParams();
   const tankMode = sp.get("mode") === "tank";
-  const [all, setAll] = useState<AnimalSummary[]>([]);
+  const all = listAnimals({ pageSize: 500 }).items;
   const [sel, setSel] = useState<string[]>(() => (sp.get("a") ? [sp.get("a")!] : []));
-  const [animals, setAnimals] = useState<Animal[]>([]);
-
-  useEffect(() => { fetch("/api/animals?pageSize=500").then((r) => r.json()).then((d) => setAll(d.items)); }, []);
-  useEffect(() => {
-    Promise.all(sel.map((s) => fetch(`/api/animals/${s}`).then((r) => r.json()))).then(setAnimals);
-  }, [sel]);
+  const animals = sel.map((s) => getAnimal(s)).filter((a): a is Animal => !!a);
 
   const rows: [string, (a: Animal) => string][] = [
     ["Group", (a) => a.group],
@@ -77,8 +74,8 @@ function CompareInner() {
         {pool.map((a) => <button key={a.slug} className="chip" aria-pressed={sel.includes(a.slug)} onClick={() => toggle(a.slug)}>{a.emoji} {a.commonName}</button>)}
       </div>
       <div className="flex gap-2">
-        <a className="chip" href="/compare" aria-current={!tankMode}>Compare animals</a>
-        <a className="chip" href="/compare?mode=tank" aria-current={tankMode}>Tank mates</a>
+        <Link className="chip" href="/compare" aria-current={!tankMode}>Compare animals</Link>
+        <Link className="chip" href="/compare?mode=tank" aria-current={tankMode}>Tank mates</Link>
       </div>
 
       {tankMode ? <TankCheck fish={animals} /> : animals.length >= 2 ? (

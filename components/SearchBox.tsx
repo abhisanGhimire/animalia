@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounced } from "./useDebounced";
 import { useSettings } from "@/lib/settings";
+import { suggest } from "@/lib/db";
 import type { AnimalSummary } from "@/lib/types";
 
 export default function SearchBox({ big = false }: { big?: boolean }) {
@@ -16,11 +17,7 @@ export default function SearchBox({ big = false }: { big?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (dq.trim().length < 2) { setItems([]); return; }
-    const ctl = new AbortController();
-    fetch(`/api/suggest?q=${encodeURIComponent(dq)}&hideScary=${hideScary}`, { signal: ctl.signal })
-      .then((r) => r.json()).then(setItems).catch(() => {});
-    return () => ctl.abort();
+    setItems(dq.trim().length < 2 ? [] : suggest(dq, hideScary));
   }, [dq, hideScary]);
 
   useEffect(() => {

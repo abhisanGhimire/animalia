@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
 import AnimalCard from "@/components/AnimalCard";
 import { useProgress, streak } from "@/lib/store";
+import { listAnimals } from "@/lib/db";
 import type { AnimalSummary } from "@/lib/types";
 
 function Grid({ title, items, empty }: { title: string; items: AnimalSummary[]; empty: string }) {
@@ -15,8 +15,7 @@ function Grid({ title, items, empty }: { title: string; items: AnimalSummary[]; 
 
 export default function CollectionPage() {
   const { favorites, recent, quiz, streakDays, ready } = useProgress();
-  const [all, setAll] = useState<AnimalSummary[]>([]);
-  useEffect(() => { fetch("/api/animals?pageSize=500").then((r) => r.json()).then((d) => setAll(d.items)); }, []);
+  const all = listAnimals({ pageSize: 500 }).items;
   const by = (slugs: string[]) => slugs.map((s) => all.find((a) => a.slug === s)).filter(Boolean) as AnimalSummary[];
   const accuracy = quiz.answered ? Math.round((quiz.correct / quiz.answered) * 100) : 0;
 
