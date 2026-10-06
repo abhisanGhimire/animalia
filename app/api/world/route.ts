@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
   url.searchParams.set("rank", "SPECIES");
   url.searchParams.set("status", "ACCEPTED");
   url.searchParams.set("datasetKey", BACKBONE);
+  if (req.nextUrl.searchParams.get("extinct") === "true") url.searchParams.set("extinct", "true");
   url.searchParams.set("limit", "40");
 
   try {

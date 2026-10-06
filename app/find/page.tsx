@@ -12,6 +12,7 @@ export default function FindPage() {
   const [mine, setMine] = useState<AnimalSummary[]>([]);
   const [world, setWorld] = useState<WorldAnimal[]>([]);
   const [total, setTotal] = useState(0);
+  const [extinct, setExtinct] = useState(false);
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
 
   useEffect(() => {
@@ -19,22 +20,23 @@ export default function FindPage() {
     const ctl = new AbortController();
     setState("loading");
     fetch(`/api/animals?q=${encodeURIComponent(dq)}&pageSize=6`, { signal: ctl.signal }).then((r) => r.json()).then((d) => setMine(d.items)).catch(() => {});
-    fetch(`/api/world?q=${encodeURIComponent(dq)}`, { signal: ctl.signal })
+    fetch(`/api/world?q=${encodeURIComponent(dq)}&extinct=${extinct}`, { signal: ctl.signal })
       .then((r) => r.json())
       .then((d) => { setWorld(d.results ?? []); setTotal(d.total ?? 0); setState(d.error ? "error" : "done"); })
       .catch((e) => { if (e.name !== "AbortError") setState("error"); });
     return () => ctl.abort();
-  }, [dq]);
+  }, [dq, extinct]);
 
   return (
     <div className="mx-auto max-w-3xl space-y-4">
       <h1 className="text-3xl font-bold">🔎 Find Any Animal</h1>
       <p className="text-muted">
-        We have kid pages for our favourite animals, but there are about two million kinds of animals on Earth!
+        We have kid pages for our favourite animals, but there are about two million known kinds of animals, plus lots that died out long ago!
         Type a name here to look up almost any of them in a giant science database called GBIF.
       </p>
       <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} aria-label="Animal name"
-        placeholder="Try: red fox, ladybird, narwhal, axolotl…" className="w-full rounded-full border-2 border-line bg-card px-6 py-4 text-lg" />
+        placeholder="Try: red fox, ladybird, narwhal, tyrannosaurus…" className="w-full rounded-full border-2 border-line bg-card px-6 py-4 text-lg" />
+      <button className="chip" aria-pressed={extinct} onClick={() => setExtinct(!extinct)}>🦴 Only extinct animals (dinosaurs, mammoths…)</button>
 
       {mine.length > 0 && (
         <section aria-labelledby="mine">

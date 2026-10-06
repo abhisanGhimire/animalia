@@ -1,23 +1,12 @@
 import Link from "next/link";
 import { taxonomyTree } from "@/lib/db";
 import type { AnimalSummary } from "@/lib/types";
+import { KID } from "@/data/kidnames";
+import DeepTree from "@/components/DeepTree";
 
 export const metadata = { title: "Tree of Life | Animalia" };
 
 type Node = { name: string; rank: string; children: Node[]; animals?: AnimalSummary[] };
-
-// Kid-friendly nicknames for the big branches. Anything not listed shows its science name,
-// so the tree keeps working when new animals are added to the database.
-const KID: Record<string, [string, string]> = {
-  Chordata: ["Animals with backbones", "🦴"], Arthropoda: ["Animals with jointed legs", "🦵"], Mollusca: ["Soft-bodied animals", "🐚"],
-  Cnidaria: ["Jellyfish & corals", "🪼"], Echinodermata: ["Starfish & sea urchins", "⭐"], Annelida: ["Segmented worms", "🪱"],
-  Porifera: ["Sponges", "🧽"], Tardigrada: ["Water bears", "🐻"],
-  Mammalia: ["Mammals", "🦁"], Aves: ["Birds", "🐦"], Reptilia: ["Reptiles", "🐢"], Amphibia: ["Amphibians", "🐸"],
-  Actinopterygii: ["Bony fish", "🐟"], Chondrichthyes: ["Sharks & rays", "🦈"], Insecta: ["Insects", "🐞"], Arachnida: ["Spiders & scorpions", "🕷️"],
-  Malacostraca: ["Crabs, lobsters & shrimp", "🦀"], Diplopoda: ["Millipedes", "🐛"], Cephalopoda: ["Octopus & squid", "🐙"], Gastropoda: ["Snails", "🐌"],
-  Bivalvia: ["Clams", "🦪"], Scyphozoa: ["True jellyfish", "🪼"], Anthozoa: ["Corals & anemones", "🪸"], Asteroidea: ["Starfish", "⭐"],
-  Echinoidea: ["Sea urchins", "🟣"], Clitellata: ["Earthworms", "🪱"], Demospongiae: ["Common sponges", "🧽"], Eutardigrada: ["Water bears", "🐻"],
-};
 
 const RANK_KID: Record<string, string> = { Phylum: "Big group", Class: "Group", Order: "Family line", Family: "Family", Genus: "Close cousins" };
 
@@ -58,7 +47,7 @@ export default function TreePage() {
       <h1 className="text-3xl font-bold">🌳 The Tree of Life</h1>
       <p className="text-muted">
         All animals are relatives! Scientists sort them like a family tree: big branches split into smaller and smaller ones.
-        Tap a branch to open it. The little animals at the end are real animals you can visit.
+        Tap a branch to open it. The animals at the end of this first tree have their own pages. Scroll down for the giant tree with almost every animal.
       </p>
       <div className="card p-4">
         <details open className="border-l-4 pl-3" style={{ borderColor: "var(--brand)" }}>
@@ -66,7 +55,8 @@ export default function TreePage() {
           <div className="ml-2 space-y-1">{root.children.map((c) => <Branch key={c.name} n={c} depth={1} />)}</div>
         </details>
       </div>
-      <p className="text-sm text-muted">This tree only shows the animals we have so far. Looking for another one? Try <Link className="underline" href="/find">Find Any Animal</Link>.</p>
+      <DeepTree />
+      <p className="text-sm text-muted">Looking for one animal? Try <Link className="underline" href="/find">Find Any Animal</Link>.</p>
     </div>
   );
 }
