@@ -1,6 +1,6 @@
 # Animalia
 
-A kid-friendly animal encyclopedia: search, continent browsing, quizzes, comparisons, a tank-mate checker and a step-by-step Drawing Academy.
+A kid-friendly animal encyclopedia: search, continent browsing, quizzes, comparisons, food webs, a tree of life, and a lookup for almost any animal.
 
 ## Run it
 
@@ -17,8 +17,8 @@ A kid-friendly animal encyclopedia: search, continent browsing, quizzes, compari
 
 ## Data honesty
 
-24 sample animals. Facts were written from general knowledge and show "Not yet verified" until checked against the listed sources (IUCN Red List, Animal Diversity Web, Catalogue of Life). Pictures are emoji placeholders, not photographs.
+90 hand-written animals across every major group. "Find Any Animal" looks up the other ~2 million species live from GBIF (names and family tree only). Facts were written from general knowledge and show "Not yet verified" until checked against the listed sources (IUCN Red List, Animal Diversity Web, Catalogue of Life). Pictures are emoji placeholders, not photographs.
 
 ## Not built yet
 
-Real photos, audio, country-level map, tree of life, food-web diagram, photo identification, accounts, PWA/offline, worksheets and report builder.
+Real photos, audio, country-level map, photo identification, accounts, PWA/offline.

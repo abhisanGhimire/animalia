@@ -4,10 +4,11 @@
 // else in the app has to change.
 import { MAMMALS } from "@/data/mammals";
 import { OTHERS } from "@/data/others";
+import { MORE } from "@/data/more";
 import { STATUS } from "@/data/reference";
 import type { Animal, AnimalSummary, Continent, Diet } from "./types";
 
-const ALL: Animal[] = [...MAMMALS, ...OTHERS];
+const ALL: Animal[] = [...MAMMALS, ...OTHERS, ...MORE];
 const BY_SLUG = new Map(ALL.map((a) => [a.slug, a]));
 
 export function toSummary(a: Animal): AnimalSummary {
@@ -123,7 +124,7 @@ export interface Page<T> {
 
 export function listAnimals(query: Query = {}): Page<AnimalSummary> {
   const { q, group, continent, diet, status, realm, habitat, domestic, extinct, hideScary } = query;
-  const pageSize = Math.min(Math.max(query.pageSize ?? 12, 1), 60);
+  const pageSize = Math.min(Math.max(query.pageSize ?? 12, 1), 500);
   const page = Math.max(query.page ?? 1, 1);
 
   const rows = ALL.filter(

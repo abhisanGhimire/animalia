@@ -9,7 +9,7 @@ const body = Nunito({ variable: "--font-body", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Animalia: Explore Every Animal",
-  description: "A kid-friendly animal encyclopedia with maps, quizzes, comparisons and drawing lessons.",
+  description: "A kid-friendly animal encyclopedia with food webs, a tree of life, quizzes and more.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

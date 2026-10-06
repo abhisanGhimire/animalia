@@ -15,6 +15,9 @@ export type AnimalGroup =
   | "Mollusks"
   | "Cnidarians"
   | "Echinoderms"
+  | "Myriapods"
+  | "Annelids"
+  | "Sponges"
   | "Other";
 
 export type Continent =
@@ -30,7 +33,6 @@ export type Diet = "Herbivore" | "Carnivore" | "Omnivore" | "Insectivore" | "Fil
 export type Realm = "Land" | "Freshwater" | "Marine" | "Air";
 export type Activity = "Diurnal" | "Nocturnal" | "Crepuscular" | "Varies";
 export type Confidence = "High" | "Medium" | "Low";
-export type BodyPlan = "quadruped" | "bird" | "fish" | "none";
 
 export interface Source {
   name: string;
@@ -127,7 +129,6 @@ export interface Animal {
     notes: string;
   };
 
-  bodyPlan: BodyPlan;
   related: string[]; // slugs
 
   sources: Source[];

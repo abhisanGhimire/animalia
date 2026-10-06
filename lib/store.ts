@@ -9,7 +9,6 @@ export interface Progress {
   favorites: string[];
   recent: string[];
   quiz: { answered: number; correct: number; best: number; xp: number };
-  drawn: string[];
   streakDays: string[]; // ISO dates the learner was active
 }
 
@@ -18,7 +17,6 @@ const EMPTY: Progress = {
   favorites: [],
   recent: [],
   quiz: { answered: 0, correct: 0, best: 0, xp: 0 },
-  drawn: [],
   streakDays: [],
 };
 
@@ -70,7 +68,6 @@ export function useProgress() {
       }),
     [update],
   );
-  const markDrawn = useCallback((slug: string) => update((x) => ({ ...x, drawn: x.drawn.includes(slug) ? x.drawn : [...x.drawn, slug] })), [update]);
   const recordQuiz = useCallback(
     (correct: number, total: number) =>
       update((x) => ({
@@ -85,7 +82,7 @@ export function useProgress() {
     [update],
   );
 
-  return { ...p, ready, toggleFavorite, markViewed, markDrawn, recordQuiz };
+  return { ...p, ready, toggleFavorite, markViewed, recordQuiz };
 }
 
 export function streak(days: string[]): number {

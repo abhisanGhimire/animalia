@@ -6,7 +6,7 @@ import { CONTINENTS } from "@/data/reference";
 import { facets } from "@/lib/db";
 
 const GROUP_EMOJI: Record<string, string> = {
-  Mammals: "🦁", Birds: "🦜", Reptiles: "🐢", Amphibians: "🐸", Fish: "🐠", Insects: "🦋",
+  Mammals: "🦁", Birds: "🦜", Reptiles: "🐢", Amphibians: "🐸", Fish: "🐠", Insects: "🦋", Arachnids: "🕷️", Crustaceans: "🦀", Mollusks: "🐙", Cnidarians: "🪼", Echinoderms: "⭐", Annelids: "🪱", Myriapods: "🐛", Sponges: "🧽", Other: "🔬",
 };
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <section className="text-center">
         <p className="text-6xl" aria-hidden>🦒🐘🐧🦋</p>
         <h1 className="mt-2 text-4xl font-bold md:text-6xl">Explore Every Animal on Earth</h1>
-        <p className="mx-auto mt-2 max-w-xl text-muted">Meet {f.total} animals so far. Search, play, draw and discover!</p>
+        <p className="mx-auto mt-2 max-w-xl text-muted">Meet {f.total} animals so far. Search, play and discover!</p>
         <div className="mx-auto mt-5 max-w-2xl"><SearchBox big /></div>
       </section>
 
@@ -48,10 +48,13 @@ export default function Home() {
       <div className="grid gap-4 md:grid-cols-2">
         <SurpriseMe />
         <section className="card p-6 text-center">
-          <h2 className="text-2xl font-bold">✏️ Learn to Draw</h2>
-          <p className="my-2 text-muted">Step-by-step lessons that teach you to look closely.</p>
-          <Link href="/draw" className="btn">Start drawing</Link>
-          <Link href="/learn" className="btn btn-ghost ml-2">🧠 Take a quiz</Link>
+          <h2 className="text-2xl font-bold">🕸️ Who eats who?</h2>
+          <p className="my-2 text-muted">See how animals and plants are connected, and grow the tree of life.</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Link href="/food-web" className="btn">🕸️ Food webs</Link>
+            <Link href="/tree" className="btn btn-ghost">🌳 Tree of life</Link>
+            <Link href="/learn" className="btn btn-ghost">🧠 Quiz</Link>
+          </div>
         </section>
       </div>
     </div>

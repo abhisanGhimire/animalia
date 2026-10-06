@@ -25,7 +25,6 @@ export default function AnimalProfile({ animal: a, similar }: { animal: Animal; 
   const { markViewed } = useProgress();
   const [part, setPart] = useState(0);
   const kid = mode === "kid";
-  const sci = mode === "scientific";
   const text = kid ? a.kid : a.explorer;
   const st = STATUS[a.conservation.code];
 
@@ -51,7 +50,6 @@ export default function AnimalProfile({ animal: a, similar }: { animal: Animal; 
           <div className="mt-3 flex flex-wrap gap-2">
             <SpeakButton text={a.commonName} label={kid ? "Say its name" : "Pronounce"} />
             <FavButton slug={a.slug} name={a.commonName} />
-            {a.bodyPlan !== "none" && <Link className="btn" href={`/draw?animal=${a.slug}`}>✏️ Draw it</Link>}
             <Link className="btn btn-ghost" href={`/compare?a=${a.slug}`}>⚖️ Compare</Link>
           </div>
           {kid && a.kid.pronunciation && <p className="mt-2 text-sm text-muted">Say it like: <b>{a.kid.pronunciation}</b></p>}
@@ -109,26 +107,11 @@ export default function AnimalProfile({ animal: a, similar }: { animal: Animal; 
         </Section>
       )}
 
-      {sci && (
-        <Section title="Taxonomy & science" emoji="🔬" open>
-          <dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
-            {Object.entries(a.taxonomy).map(([rank, v]) => <div key={rank} className="rounded-2xl bg-bg p-2"><dt className="text-xs font-bold uppercase text-muted">{rank}</dt><dd className="italic">{v}</dd></div>)}
-          </dl>
-          <p>{a.scientific.description}</p>
-          {a.scientific.reproduction && <p><b>Reproduction:</b> {a.scientific.reproduction}</p>}
-          {a.scientific.behavior && <p><b>Behaviour:</b> {a.scientific.behavior}</p>}
-          {a.scientific.adaptations && <p><b>Adaptations:</b> {a.scientific.adaptations.join("; ")}</p>}
-          {a.topSpeedKmh && <p><b>Top speed:</b> about {a.topSpeedKmh} km/h</p>}
-          <p><b>Other names:</b> {a.otherNames.join(", ")}</p>
-          <p><b>Population trend:</b> {a.conservation.trend ?? UNAVAILABLE}</p>
-        </Section>
-      )}
-
       {a.scientific.extinction && (
         <Section title="Extinction" emoji="🦴" open>
           <p><b>When:</b> {a.scientific.extinction.when}</p>
           <p><b>Likely causes:</b> {a.scientific.extinction.causes}</p>
-          <p><b>Scientific confidence:</b> {a.scientific.extinction.confidence}. Drawings and descriptions of extinct animals are reconstructions, not photographs.</p>
+          <p><b>Scientific confidence:</b> {a.scientific.extinction.confidence}. Pictures and descriptions of extinct animals are best guesses made from fossils, not photographs.</p>
         </Section>
       )}
 

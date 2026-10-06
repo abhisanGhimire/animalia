@@ -3,24 +3,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import SearchBox from "./SearchBox";
-import { useSettings, type Mode } from "@/lib/settings";
+import { useSettings } from "@/lib/settings";
 
 const NAV = [
   ["/", "Discover"], ["/animals", "Animals"], ["/map", "Map"], ["/habitats", "Habitats"], ["/conservation", "Conservation"],
-  ["/draw", "Draw"], ["/compare", "Compare"], ["/learn", "Learn"], ["/collection", "My Collection"],
+  ["/food-web", "Food Webs"], ["/tree", "Tree of Life"], ["/find", "Find Any Animal"], ["/compare", "Compare"], ["/learn", "Learn"], ["/collection", "My Collection"],
 ] as const;
-
-const MODES: [Mode, string][] = [["kid", "🧒 Kid"], ["explorer", "🧭 Explorer"], ["scientific", "🔬 Scientist"]];
 
 export default function Header() {
   const path = usePathname();
-  const { mode, setMode, theme, setTheme, hideScary, setHideScary } = useSettings();
+  const { theme, setTheme, hideScary, setHideScary } = useSettings();
   const [open, setOpen] = useState(false);
   const controls = (
     <>
-      <div role="group" aria-label="Reading level" className="flex gap-1">
-        {MODES.map(([m, label]) => <button key={m} className="chip" aria-pressed={mode === m} onClick={() => setMode(m)}>{label}</button>)}
-      </div>
       <button className="chip" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle dark mode">{theme === "dark" ? "☀️" : "🌙"}</button>
       <button className="chip" aria-pressed={hideScary} onClick={() => setHideScary(!hideScary)} title="Hides animals that might be frightening (for parents and teachers)">🛡️ Gentle</button>
     </>

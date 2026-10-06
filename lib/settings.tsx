@@ -29,7 +29,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setS({ ...DEFAULTS, ...JSON.parse(raw) });
+      if (raw) setS({ ...DEFAULTS, ...JSON.parse(raw), mode: "kid" });
       else if (window.matchMedia("(prefers-color-scheme: dark)").matches) setS((p) => ({ ...p, theme: "dark" }));
     } catch {}
   }, []);

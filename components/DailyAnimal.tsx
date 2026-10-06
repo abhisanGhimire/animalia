@@ -27,7 +27,6 @@ export default function DailyAnimal() {
         <p className="font-semibold">💡 Did you know? {text.facts[0]}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link className="btn" href={`/animals/${a.slug}`}>Learn more</Link>
-          {a.bodyPlan !== "none" && <Link className="btn btn-ghost" href={`/draw?animal=${a.slug}`}>✏️ Draw this animal</Link>}
         </div>
       </div>
     </section>

@@ -8,7 +8,7 @@ import type { AnimalSummary } from "@/lib/types";
 
 interface Page { items: AnimalSummary[]; total: number; page: number; pages: number }
 
-const GROUPS = ["Mammals", "Birds", "Reptiles", "Amphibians", "Fish", "Insects"];
+const GROUPS = ["Mammals", "Birds", "Reptiles", "Amphibians", "Fish", "Insects", "Arachnids", "Crustaceans", "Mollusks", "Cnidarians", "Echinoderms", "Annelids", "Myriapods", "Sponges", "Other"];
 const DIETS = ["Herbivore", "Carnivore", "Omnivore", "Filter feeder"];
 const REALMS = ["Land", "Freshwater", "Marine", "Air"];
 

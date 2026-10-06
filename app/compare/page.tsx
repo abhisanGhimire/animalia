@@ -47,7 +47,7 @@ function CompareInner() {
   const [sel, setSel] = useState<string[]>(() => (sp.get("a") ? [sp.get("a")!] : []));
   const [animals, setAnimals] = useState<Animal[]>([]);
 
-  useEffect(() => { fetch("/api/animals?pageSize=60").then((r) => r.json()).then((d) => setAll(d.items)); }, []);
+  useEffect(() => { fetch("/api/animals?pageSize=500").then((r) => r.json()).then((d) => setAll(d.items)); }, []);
   useEffect(() => {
     Promise.all(sel.map((s) => fetch(`/api/animals/${s}`).then((r) => r.json()))).then(setAnimals);
   }, [sel]);
